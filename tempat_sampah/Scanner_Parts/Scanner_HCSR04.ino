@@ -1,17 +1,44 @@
-float tetha, a, g, us = A0, nilai1, nilai2, nilai3, batas1 = 21.0,batas2 = 8.75;
+//initiate------------------------------------------------------------------
+//declare_Var
+float tetha, a, g,dur, nilai1, nilai2, nilai3, batas1 = 21.0,batas2 = 8.75;
+
+typdef hcsr04 struct{
+  int Trig;
+  int Echo;
+  
+}HCSR04;
+
+HCSR04 Dist={9,10};
+
+//HCSR04_func
+//ACTIVATE_HCSR04
+void HCSR04_ON(int trig){
+
+  digitalWrite(trig, LOW);  
+	delayMicroseconds(2);  
+	digitalWrite(trig, HIGH);  
+	delayMicroseconds(10);  
+	digitalWrite(trig, LOW);
+  
+}
+//--------------------------------------
 
 
 void setup() {
-  // put your setup code here, to run once:
+  
   Serial.begin(9600);
-  pinMode(us,INPUT);
-
+  pinMode(Dist.Trig,OUTPUT);
+  pinMode(Dist.Echo,INPUT);
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  g = analogRead(us);
+  //Distance_measurement_start---------------------
+  HCSR04_ON(Dist.Trig);
+  dur = pulseIn(Dist.Trig, HIGH);
+  g = (dur*0.0343)/2;
+
+  //checking_condition-----------------------------
   if (tetha <= 22,61){
     nilai1 = g*cos(tetha);
     if (nilai1 == 21.0){
