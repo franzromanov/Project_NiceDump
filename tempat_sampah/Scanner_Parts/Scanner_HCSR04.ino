@@ -2,7 +2,7 @@
 //declare_Var
 float tetha, a, g,dur, nilai1, nilai2, nilai3, batas1 = 21.0,batas2 = 8.75;
 
-typdef hcsr04 struct{
+typedef struct hcsr04 {
   int Trig;
   int Echo;
   
@@ -15,10 +15,10 @@ HCSR04 Dist={9,10};
 void HCSR04_ON(int trig){
 
   digitalWrite(trig, LOW);  
-	delayMicroseconds(2);  
-	digitalWrite(trig, HIGH);  
-	delayMicroseconds(10);  
-	digitalWrite(trig, LOW);
+  delayMicroseconds(2);  
+  digitalWrite(trig, HIGH);  
+  delayMicroseconds(10);  
+  digitalWrite(trig, LOW);
   
 }
 //--------------------------------------
@@ -35,15 +35,18 @@ void setup() {
 void loop() {
   //Distance_measurement_start---------------------
   HCSR04_ON(Dist.Trig);
-  dur = pulseIn(Dist.Trig, HIGH);
-  g = (dur*0.0343)/2;
+  dur = pulseIn(Dist.Echo, HIGH);
+  g = (dur*.0343)/2;;
+  tetha=22.61;
 
   //checking_condition-----------------------------
-  if (tetha <= 22,61){
-    nilai1 = g*cos(tetha);
-    if (nilai1 == 21.0){
+  if (tetha <= 22.61){
+    nilai1 =abs( g*cos(tetha));
+    if (nilai1 >= 21.0){
+      Serial.print(nilai1);
       Serial.println("tidak ada benda");
-    }else if (nilai1 != 21.0){
+    }else if (nilai1 < 21.0){
+      Serial.print(nilai1);
       Serial.println("benda terdeteksi");
     }
   }else if (tetha > 22.61){
