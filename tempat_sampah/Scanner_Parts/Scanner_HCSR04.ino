@@ -21,9 +21,9 @@ void HCSR04_ON(int trig){
   digitalWrite(trig, LOW);
   
 }
-//--------------------------------------
 
 
+//--------------------------------------------------------
 void setup() {
   
   Serial.begin(9600);
@@ -37,11 +37,12 @@ void loop() {
   HCSR04_ON(Dist.Trig);
   dur = pulseIn(Dist.Echo, HIGH);
   g = (dur*.0343)/2;;
-  tetha=22.61;
+  tetha=10;
 
-  //checking_condition-----------------------------
-  if (tetha <= 22.61){
-    nilai1 =abs( g*cos(tetha));
+  //checking_condition------------------------
+  if (tetha >= 67.39||tetha <= 112.61){
+    nilai1 =abs( g*cos(tetha-90));
+   
     if (nilai1 >= 21.0){
       Serial.print(nilai1);
       Serial.println("tidak ada benda");
@@ -49,27 +50,14 @@ void loop() {
       Serial.print(nilai1);
       Serial.println("benda terdeteksi");
     }
-  }else if (tetha > 22.61){
-    if (tetha > 180){
-      a = 180 - (90 + tetha);
-      nilai2 = g*cos(a);
-      if (nilai2 == 8.75){
+  }else if ( tetha < 67.39 || tetha > 112.61 ){
+    
+      nilai2 = abs(g*cos(tetha-90));
+      if (nilai2 >=  8.75){
         Serial.println("benda tidak terdeteksi");
-      }else if (nilai2 != 8.75){
+      }else if (nilai2 < 8.75){
         Serial.println("benda terdeteksi");
-      }
-    }else if (tetha < 180){
-      a = 360 - (270 + tetha);
-      nilai3 = g*cos(a);
-      if (nilai3 == 8.75){
-        Serial.println("benda tidak terdeteksi");
-      }else if (nilai3 != 8.75){
-        Serial.println("benda terdeteksi");
-      }
 
-
-    }
-  } 
-
-
+}
+} 
 }
