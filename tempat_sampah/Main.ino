@@ -12,6 +12,8 @@ int deg(float Ang){
 //declare
 HCSR04 Dist={9,10};//HCSR04_STRUCT
 float arrCoordinate[3];
+int motox_pin[2]={2,3};
+int motoy_pin[2]={4,5};
 int state=1,start_scan=1,deg_,correct_waste=0;
 float to_ = 0, t_, To_ = 60; // Set your time interval to 60 seconds
 float time_up = 0; // Track the last reset time
@@ -38,8 +40,18 @@ void setup() {
   //initiate
   serv.write(90);
   delay(1000);
-  //valve.write(180);
+  valve.write(105);
   
+  //////MOTOR_PIN//////
+  for(int i=0; i<2;i++){
+    
+    //MOTOR_X
+    pinMode(motox_pin[i],OUTPUT);
+    //MOTOR_Y    
+    pinMode(motoy_pin[i],OUTPUT);
+     
+    }
+
 }
 
 void loop(){
@@ -47,6 +59,7 @@ void loop(){
 
 
 //HCSR04_SCANNER_SESSION---------------------------------------------------------
+/*
   if(start_scan==1){
   while(state!=1){
   
@@ -115,33 +128,48 @@ void loop(){
   }
   start_scan=0;
   }
+  */
 
 
 /*
 //MOTOR_MOVEMENT_SESSION------------------
   displace.x = arrCoordinate[2]*cos((arrCoordinate[1]/180)*PI);
   displace.y = arrCoordinate[2]*sin((arrCoordinate[1]/180)*PI);
-  MOVE(displace);
+/*
+  //define motor
+  motor MOTOR_CTRL;
+  for(int i=0;i<2;i++){
+    MOTOR_CTRL.moto_x[i]=motox_pin[i];
+    MOTOR_CTRL.moto_y[i]=motoy_pin[i];
+  }
+  MOTOR_CTRL.velo_x=;
+  MOTOR_CTRL.velo_y=;
+
+  //To_obj
+  MOVE(displace,&MOTOR_CTRL,false);
+
 */
 
-
-/*
 //WASTE_CHECK_SESSION
   WasteCheck(&correct_waste, check_waste);
+/*
+  //To_starting_point
+  MOVE(displace,&MOTOR_CTRL,true);
 */
 
 
-/*
+
+
 //VALVE_SESSION----------------------------
 
   if(state==1 && correct_waste==1){
   // Wait for 1 second
-    valve.write(120);
-    delay(2000); // Wait for 1 second
     valve.write(180);
-    state=0;
+    delay(2000); // Wait for 1 second
+    valve.write(105);
+    //state=0;
     }
 
-*/
+
 
 }
